@@ -20,7 +20,7 @@
                         <div><a style="color:blue;" href="{{ route('customers.show', ['customer' => $customer->id]) }}" >{{ $customer->name }}</a></div>
                         <div>{{ $customer->phone_number }}</div>
                         <div>{{ $customer->email }}</div>
-                        <div align='right'>{{ $customer->budget }}</div>  
+                        <div align='right'>USD {{ number_format($customer->budget,2) }}</div>  
                         <div>
                             <a style="color:blue;" href="">{{ __('Create Wordpress Account') }}</a>
                         </div>
