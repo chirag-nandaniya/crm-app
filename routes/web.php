@@ -22,6 +22,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::resource('/customers', CustomerController::class)->only(['index', 'show', 'store', 'create']);
+Route::get('/customers/export', [CustomerController::class, 'export'])->name('customers.export');
+Route::resource('/customers', CustomerController::class)->only(['index', 'show', 'store', 'create','export']);
+
 
 require __DIR__.'/auth.php';
