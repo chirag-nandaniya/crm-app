@@ -48,8 +48,8 @@ class CustomerController extends Controller
             'name' => 'required|string|max:50',
             'phone_number' => 'required|string|min:10',
             'email' => 'required|string|email|max:255',
-            'budget' => 'required|digits:2',
-            'massage' => 'required|string'
+            'budget' => 'required|numeric',
+            'message' => 'required|string|min:10'
         ]);
 
         if ($validator->fails()) {
