@@ -14,6 +14,16 @@
                             <a href="{{ route('customers.export') }}">{{ __('Export') }}</a>
                         </x-button>
                     </div>
+                    @if(session()->has('message'))
+                        <p style="color:green;">
+                            {{session()->get('message')}}
+                        </p>
+                    @endif
+                    @if(session()->has('error'))
+                        <p style="color:red;">
+                            {{session()->get('error')}}
+                        </p>
+                    @endif
                     <div class="grid grid-cols-5 gap-4">
                         <div><b>Name</b></div>
                         <div><b>Phone Number</b></div>
@@ -27,7 +37,7 @@
                         <div>{{ $customer->email }}</div>
                         <div align='right'>USD {{ number_format($customer->budget,2) }}</div>  
                         <div>
-                            <a style="color:blue;" href="">{{ __('Create Wordpress Account') }}</a>
+                            <a style="color:blue;" href="{{ route('customers.createwordpressaccount', ['id' => $customer->id]) }}">{{ __('Create Wordpress Account') }}</a>
                         </div>
                         @empty
                         <p>{{ __('No customers yet!') }}</p>

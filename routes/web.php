@@ -25,5 +25,5 @@ Route::get('/dashboard', function () {
 Route::get('/customers/export', [CustomerController::class, 'export'])->name('customers.export');
 Route::resource('/customers', CustomerController::class)->only(['index', 'show', 'store', 'create','export']);
 
-
+Route::get('/customers/createwordpressaccount/{id}', [CustomerController::class, 'createwordpressaccount'])->name('customers.createwordpressaccount');
 require __DIR__.'/auth.php';

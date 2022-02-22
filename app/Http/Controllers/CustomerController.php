@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Exports\CustomersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Http;
 
 class CustomerController extends Controller
 {
@@ -91,5 +92,46 @@ class CustomerController extends Controller
     public function export() 
     {
         return Excel::download(new CustomersExport, 'customers.xlsx');
+    }
+
+    public function createwordpressaccount($id){
+        
+        $customer = Customer::findOrFail($id);
+        //dd($customer);
+        $name = explode(" ", $customer->name);
+        //dd($name);
+        
+        // $data = [
+        //     'user_login' => strtolower($name[0]).strtolower($name[1]),
+        //     'email' => $customer->email,
+        //     'first_name' => $name[0],
+        //     'last_name' => $name[1],
+        //     'url' => 'http://crm-app.localhost/customers/'.$customer->id,
+        //     'password' => 'Alliswell',
+        //     'role' => 'subscriber',
+        // ]; 
+        // return view(
+        //     'customers.createwordpressaccount',
+        //     [
+        //         'customer' => Customer::findOrFail($id),
+        //     ]
+        // );
+        $response = Http::post('http://wordpress.localhost/wp-admin/admin-ajax.php?action=create_user_for_crm_customer', [
+            'user_login' => strtolower($name[0]).strtolower($name[1]),
+            'email' => $customer->email,
+            'first_name' => $name[0],
+            'last_name' => $name[1],
+            'url' => 'http://crm-app.localhost/customers/'.$customer->id,
+            'password' => 'Alliswell',
+            'role' => 'subscriber',
+        ]);
+        dd($response);
+        if($response->successful()){
+            session()->flash('message', 'Created Wordpress Account');
+            return redirect()->route('customers.index');
+        } else {
+            session()->flash('error', 'Something went wrong. Try again.');
+            return redirect()->route('customers.index');
+        }
     }
 }
